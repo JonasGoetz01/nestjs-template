@@ -4,6 +4,8 @@ import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './users/user.entity';
 import { UsersModule } from './users/users.module';
+import { AuthModule } from './auth/auth.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
@@ -19,6 +21,8 @@ import { UsersModule } from './users/users.module';
       autoLoadEntities: true
     }),
     UsersModule,
+    AuthModule,
+    ConfigModule.forRoot({ isGlobal: true })
   ],
   controllers: [AppController],
   providers: [AppService],
