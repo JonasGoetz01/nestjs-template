@@ -239,8 +239,8 @@ describe('AuthController (e2e)', () => {
             expect(loginResponse.body.message).toBe('User signed in successfully');
 
             // Extract cookie from login response
-            const cookies = loginResponse.headers['set-cookie'];
-            const tokenCookie = cookies.find((cookie: string) => cookie.startsWith('token='));
+            const cookies = loginResponse.headers['set-cookie'] as unknown as string[];
+            const tokenCookie = cookies?.find((cookie: string) => cookie.startsWith('token='));
 
             // Logout
             const mockSignOutResponse = { error: null };
@@ -248,7 +248,7 @@ describe('AuthController (e2e)', () => {
 
             const logoutResponse = await request(app.getHttpServer())
                 .post('/auth/logout')
-                .set('Cookie', tokenCookie)
+                .set('Cookie', tokenCookie || '')
                 .expect(200);
 
             expect(logoutResponse.body.message).toBe('User signed out successfully');

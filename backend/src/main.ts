@@ -14,9 +14,29 @@ async function bootstrap() {
   app.useLogger(new Logger())
 
   const config = new DocumentBuilder()
-    .setTitle('NestJS API')
-    .setDescription('The API description')
+    .setTitle('NestJS Backend API')
+    .setDescription('A comprehensive backend API with authentication, user management, and file storage capabilities using Supabase')
     .setVersion('1.0')
+    .addBearerAuth(
+      {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT',
+        name: 'JWT',
+        description: 'Enter JWT token',
+        in: 'header',
+      },
+      'JWT-auth',
+    )
+    .addCookieAuth('token', {
+      type: 'apiKey',
+      in: 'cookie',
+      name: 'token',
+      description: 'Authentication cookie',
+    })
+    .addTag('Authentication', 'User authentication and session management')
+    .addTag('Users', 'User management operations')
+    .addTag('Files', 'File storage and management with Supabase Storage')
     .build();
   const documentFactory = () => SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, documentFactory);
