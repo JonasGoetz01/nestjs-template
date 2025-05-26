@@ -4,10 +4,13 @@
 
 ### Run the backend:
 ```sh
-npm run start
+npm run dev
 ```
 
 ### Run the backend tests:
 ```sh
 npm run test
 ```
+
+## Swagger
+Open http://localhost:3000/api
