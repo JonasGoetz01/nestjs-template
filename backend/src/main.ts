@@ -3,15 +3,15 @@ import { AppModule } from './app.module';
 import * as dotenv from 'dotenv';
 import * as cookieParser from 'cookie-parser'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { ConsoleLogger } from '@nestjs/common';
+import { ConsoleLogger, Logger } from '@nestjs/common';
+import { ArgumentOutOfRangeError } from 'rxjs';
 declare const module: any;
 
 async function bootstrap() {
   dotenv.config()
-  const app = await NestFactory.create(AppModule, {
-    logger: new ConsoleLogger,
-  });
+  const app = await NestFactory.create(AppModule);
   app.use(cookieParser());
+  app.useLogger(new Logger())
 
   const config = new DocumentBuilder()
     .setTitle('NestJS API')
