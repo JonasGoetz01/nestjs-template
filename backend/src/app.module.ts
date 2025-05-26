@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from './users/user.entity';
+import { User } from './entities/user.entity';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
@@ -16,8 +16,10 @@ import { ConfigModule } from '@nestjs/config';
       username: 'postgres',
       password: 'your-super-secret-and-long-postgres-password',
       database: 'postgres',
-      entities: [User],
-      synchronize: true,
+      entities: [
+        __dirname + './entities/**/*.entity{.ts,.js}',
+      ],
+      synchronize: false,
       autoLoadEntities: true
     }),
     UsersModule,
@@ -27,4 +29,4 @@ import { ConfigModule } from '@nestjs/config';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }
