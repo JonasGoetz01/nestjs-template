@@ -1,0 +1,530 @@
+{
+    "info": {
+        "name": "NestJS Backend API",
+        "description": "Comprehensive backend API with authentication, user management, and file storage",
+        "version": "1.0.0",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "auth": {
+        "type": "bearer",
+        "bearer": [
+            {
+                "key": "token",
+                "value": "{{jwt_token}}",
+                "type": "string"
+            }
+        ]
+    },
+    "variable": [
+        {
+            "key": "base_url",
+            "value": "http://localhost:3000",
+            "type": "string"
+        },
+        {
+            "key": "jwt_token",
+            "value": "",
+            "type": "string"
+        }
+    ],
+    "item": [
+        {
+            "name": "Authentication",
+            "item": [
+                {
+                    "name": "Login",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "// Extract JWT token from cookie if present",
+                                    "const cookies = pm.response.headers.get('Set-Cookie');",
+                                    "if (cookies) {",
+                                    "    const tokenMatch = cookies.match(/token=([^;]+)/);",
+                                    "    if (tokenMatch) {",
+                                    "        pm.environment.set('jwt_token', tokenMatch[1]);",
+                                    "        console.log('JWT token extracted and saved');",
+                                    "    }",
+                                    "}"
+                                ],
+                                "type": "text/javascript"
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/auth/login",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "auth",
+                                "login"
+                            ]
+                        },
+                        "description": "Sign in with hardcoded credentials and get JWT token"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Current User",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/auth/me",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "auth",
+                                "me"
+                            ]
+                        },
+                        "description": "Get currently authenticated user information"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Logout",
+                    "request": {
+                        "method": "POST",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/auth/logout",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "auth",
+                                "logout"
+                            ]
+                        },
+                        "description": "Sign out user and clear authentication cookie"
+                    },
+                    "response": []
+                }
+            ],
+            "description": "Authentication endpoints for login, logout, and user info"
+        },
+        {
+            "name": "Users",
+            "item": [
+                {
+                    "name": "Get All Users",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/users",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "users"
+                            ]
+                        },
+                        "description": "Get all users with dynamic view based on role"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get All Users (Public View)",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/users/public",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "users",
+                                "public"
+                            ]
+                        },
+                        "description": "Get all users with minimal public information"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get All Users (Admin View)",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/users/admin",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "users",
+                                "admin"
+                            ]
+                        },
+                        "description": "Get all users with full administrative details (admin only)"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get User by ID",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/users/:id",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "users",
+                                ":id"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": "123e4567-e89b-12d3-a456-426614174000",
+                                    "description": "User ID"
+                                }
+                            ]
+                        },
+                        "description": "Get specific user by ID with dynamic view based on permissions"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get User by ID (Public View)",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/users/:id/public",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "users",
+                                ":id",
+                                "public"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": "123e4567-e89b-12d3-a456-426614174000",
+                                    "description": "User ID"
+                                }
+                            ]
+                        },
+                        "description": "Get specific user with minimal public information"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get User Profile",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/users/:id/profile",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "users",
+                                ":id",
+                                "profile"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": "123e4567-e89b-12d3-a456-426614174000",
+                                    "description": "User ID"
+                                }
+                            ]
+                        },
+                        "description": "Get user profile (own profile or admin access)"
+                    },
+                    "response": []
+                }
+            ],
+            "description": "User management endpoints with role-based data views"
+        },
+        {
+            "name": "Files",
+            "item": [
+                {
+                    "name": "Upload File",
+                    "request": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                            "mode": "formdata",
+                            "formdata": [
+                                {
+                                    "key": "files",
+                                    "type": "file",
+                                    "src": []
+                                },
+                                {
+                                    "key": "folder",
+                                    "value": "uploads",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "description",
+                                    "value": "Test file upload",
+                                    "type": "text"
+                                }
+                            ]
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/files/upload",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "files",
+                                "upload"
+                            ]
+                        },
+                        "description": "Upload files with metadata"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get All Files",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/files",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "files"
+                            ],
+                            "query": [
+                                {
+                                    "key": "page",
+                                    "value": "1",
+                                    "disabled": true
+                                },
+                                {
+                                    "key": "limit",
+                                    "value": "10",
+                                    "disabled": true
+                                },
+                                {
+                                    "key": "category",
+                                    "value": "document",
+                                    "disabled": true
+                                },
+                                {
+                                    "key": "folder",
+                                    "value": "uploads",
+                                    "disabled": true
+                                }
+                            ]
+                        },
+                        "description": "Get list of files with optional filtering and pagination"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get File by ID",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/files/:id",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "files",
+                                ":id"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": "file-id-here",
+                                    "description": "File ID"
+                                }
+                            ]
+                        },
+                        "description": "Get file metadata by ID"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Download File",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/files/:id/download",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "files",
+                                ":id",
+                                "download"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": "file-id-here",
+                                    "description": "File ID"
+                                }
+                            ]
+                        },
+                        "description": "Download file content"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Signed URL",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/files/:id/signed-url",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "files",
+                                ":id",
+                                "signed-url"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": "file-id-here",
+                                    "description": "File ID"
+                                }
+                            ],
+                            "query": [
+                                {
+                                    "key": "expiresIn",
+                                    "value": "3600",
+                                    "disabled": true,
+                                    "description": "Expiration time in seconds"
+                                }
+                            ]
+                        },
+                        "description": "Generate temporary signed URL for file access"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Update File",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"description\": \"Updated file description\",\n  \"folder\": \"new-folder\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/files/:id",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "files",
+                                ":id"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": "file-id-here",
+                                    "description": "File ID"
+                                }
+                            ]
+                        },
+                        "description": "Update file metadata"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Delete File",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/files/:id",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "files",
+                                ":id"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": "file-id-here",
+                                    "description": "File ID"
+                                }
+                            ]
+                        },
+                        "description": "Delete file from storage and database"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Storage Statistics",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/files/admin/stats",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "files",
+                                "admin",
+                                "stats"
+                            ]
+                        },
+                        "description": "Get storage usage statistics (admin only)"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Initialize Storage Bucket",
+                    "request": {
+                        "method": "POST",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/files/admin/init-bucket",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "files",
+                                "admin",
+                                "init-bucket"
+                            ]
+                        },
+                        "description": "Initialize Supabase storage bucket (admin only)"
+                    },
+                    "response": []
+                }
+            ],
+            "description": "File storage and management endpoints"
+        }
+    ]
+}
