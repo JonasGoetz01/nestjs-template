@@ -1,3 +1,14 @@
-**/**/node_modules/
+# Dependencies
+node_modules/
+
+# Database backups (uncomment specific files if you want to commit them)
+.devcontainer/backups/*.sql
+!.devcontainer/backups/.gitkeep
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
 **/**/dist/
 .devcontainer/volumes/

@@ -11,7 +11,7 @@ RUN echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
 # Set `DEVCONTAINER` environment variable to help with orientation
 ENV DEVCONTAINER=true
 
-# Update package list and install necessary dependencies
+# Update package list and install necessary dependencies including PostgreSQL client
 RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
     git \
@@ -20,6 +20,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     openssh-client \
     gcc \
     pkg-config \
+    postgresql-client \
     && rm -rf /var/lib/apt/lists/*
 
 # Install nestjs CLI globally

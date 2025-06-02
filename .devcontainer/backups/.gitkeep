@@ -1,0 +1,2 @@
+# This file ensures the backups directory is tracked in git
+# Database backup files are ignored by default but this directory structure is preserved 
